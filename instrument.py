@@ -7,8 +7,13 @@ from pythonosc import udp_client
 auth1 = tweepy.OAuthHandler(auth.consumer_key, auth.consumer_secret)
 auth1.set_access_token(auth.access_token, auth.access_token_secret)
 #set terms to track here:
-keywords = ['sandwich','egg']
+keywords = ['pizza','cat']
+
+# you can add a bunch of these, however, the more tweets this returns,
+# the more intensive the SC server use is going to be. so you will have to play with this a bit.
+
 #fundamental scale freq to base overtone series on.
+# SC seems to like lower freqs for heavy streams.
 fundamental = 60
 
 # make a freq dict for lookup
@@ -25,14 +30,15 @@ class Listener(tweepy.StreamListener):
                 #sometimes you can adjust the output freqs here, it seems better than doing it on the sc side
                 newword.append(freqs[str(letter)])
             wordfreqs.extend([newword])
-        print(self.message)
-
 
         client = udp_client.SimpleUDPClient("127.0.0.1", 57120)
-        for i in wordfreqs:
-            client.send_message("/sines", i)
-            time.sleep(0.01)
-        client.send_message('/tweet', str(self.message))
+        for wordChunk in wordfreqs:
+            wordChunk = list(wordChunk)
+            client.send_message("/sines", wordChunk)
+
+            #time.sleep(0.01)
+        print(self.message)
+        client.send_message("/tweet",str(self.message))
 
     def on_status(self, tweet):
         self.data = list(tweet.text.split())
