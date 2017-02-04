@@ -1,13 +1,18 @@
 #create auth.py with your keys and tokens for this to work!
 
-import tweepy,auth,re
-from frequency_dict import freqs
+import tweepy,auth,re, time
+from frequency_dict import MapOvertones
 from pythonosc import udp_client
 
 auth1 = tweepy.OAuthHandler(auth.consumer_key, auth.consumer_secret)
 auth1.set_access_token(auth.access_token, auth.access_token_secret)
 #set terms to track here:
-keywords = ['sandwich']
+keywords = ['sandwich','egg']
+#fundamental scale freq to base overtone series on.
+fundamental = 60
+
+# make a freq dict for lookup
+freqs = MapOvertones().calc(fundamental)
 
 class Listener(tweepy.StreamListener):
     #this could be a lot better. translates chars to scale freqs and package in 2d array of word/freqs.
@@ -17,19 +22,17 @@ class Listener(tweepy.StreamListener):
         for word in self.message:
             newword = []
             for letter in word:
+                #sometimes you can adjust the output freqs here, it seems better than doing it on the sc side
                 newword.append(freqs[str(letter)])
             wordfreqs.extend([newword])
-        print(wordfreqs)
         print(self.message)
-            #print("i = "+ str(i))
-            #print("out = " +str(out))
-            #out2.append(out)
 
-        #client = udp_client.SimpleUDPClient("127.0.0.1", 57120)
-        #client.send_message('/sines', str(out2))
-        #client.send_message('/sines',len(out2))
-        #print(out)
-            #print(len(out))
+
+        client = udp_client.SimpleUDPClient("127.0.0.1", 57120)
+        for i in wordfreqs:
+            client.send_message("/sines", i)
+            time.sleep(0.01)
+        client.send_message('/tweet', str(self.message))
 
     def on_status(self, tweet):
         self.data = list(tweet.text.split())
@@ -46,8 +49,6 @@ class Listener(tweepy.StreamListener):
                 pass
 
         self.shipMsg(out)
-
-
 
 try:
 

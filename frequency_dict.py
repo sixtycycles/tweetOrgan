@@ -1,28 +1,21 @@
-freqs = {
-    "a": 440,
-    "b": 880,
-    "c": 1320,
-    "d": 1760,
-    "e": 2200,
-    "f": 2640,
-    "g": 3080,
-    "h": 3520,
-    "i": 3960,
-    "j": 4400,
-    "k": 4840,
-    "l": 5280,
-    "m": 5720,
-    "n": 6160,
-    "o": 6600,
-    "p": 7040,
-    "q": 7480,
-    "r": 7920,
-    "s": 8360,
-    "t": 8800,
-    "u": 9240,
-    "v": 9680,
-    "w": 10120,
-    "x": 10560,
-    "y": 11000,
-    "z": 11440
-}
+class MapOvertones(object):
+    def calc(self,fundamental):
+        self.alph = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u',
+                'v', 'w', 'x', 'y', 'z']
+        self.fundamental = fundamental
+        self.ot1 = self.fundamental
+        self.freqs = [self.fundamental]
+
+        for i in range(26):
+            ot2 = self.ot1+self.fundamental
+            self.freqs.append(ot2)
+            self.ot1 = ot2
+
+        self.out = dict()
+
+        i=0
+        for letter in self.alph:
+            self.out[letter]=self.freqs[i]
+            i+=1
+        print(self.out)
+        return (self.out)
