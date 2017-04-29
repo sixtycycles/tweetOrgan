@@ -20,13 +20,13 @@ SynthDef(\sines,{ |out =0 ,freq=440, pan = 0.0,phase =0,sustain =1 amp=0.1|
 
 (
 ~s = OSCdef(\sines,{|msg,time,addr,recvPort|
-	msg.removeAt(0);
-	a = (-1.0,-0.99..1.0).choose;
+	//msg.removeAt(0);
+	//a = (-1.0,-0.99..1.0).choose;
 	Synth(\sines, [
 		freq:msg,
 		phase:msg.size,
-		sustain: msg.size/2,
-		pan: a
+		sustain: msg.size/2
+		//pan: a
 	]);
 },"/sines",n);
 

@@ -1,6 +1,6 @@
 
 import string
-#take fundamental freq as input, return dict with alphabets mapped to freqs in order.
+
 class MapOvertones(object):
     def __init__(self):
         self.freqs = []
@@ -17,9 +17,10 @@ class MapOvertones(object):
 
         self.out = {letter:freq for letter,freq in zip(string.ascii_lowercase, self.freqs)}
 
-        print(self.out)
         return (self.out)
 
-a = MapOvertones()
-a.calc(110)
+
+#print(MapOvertones().calc(110))
+
+
 
