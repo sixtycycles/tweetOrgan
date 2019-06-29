@@ -19,3 +19,4 @@ so thanks for checking this out! i hope its fun for someone other than me.
 also plz let me know if you come up with good improvements or see some nasty thing in the code (its there i promise) 
 trying to get better so really, any input helps!
 
+[watch a demo!](https://www.youtube.com/watch?v=yYjjN5Ye-28&feature=youtu.be)
